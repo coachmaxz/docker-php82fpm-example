@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+
+# ======================================================================
+# PHP 8.2
+# ======================================================================
+
+  webapp_php82_01:
+    image: webapp_php82_01:latest
+    container_name: webapp-php82-01
+    build:
+      context: ./build/php82fpm
+      dockerfile: Dockerfile
+    restart: on-failure
+    working_dir: /usr/share/nginx/html
+    environment:
+      - VIRTUAL_PORT=9000
+      - TERM=xterm
+    volumes:
+      - ./www:/usr/share/nginx/html/www
+      - ./conf.d/php82.ini:/usr/local/etc/php/php.ini
+    ports:
+      - "9000:9000"
+    networks:
+      - webapp_network
+
+# ======================================================================
+# Web Server
+# ======================================================================
+
+  webapp_nginx_01:
+    image: nginx:1.25.2-alpine
+    container_name: webapp-nginx-01
+    working_dir: /usr/share/nginx/html
+    restart: always
+    environment:
+      - NGINX_PORT=80
+      - TERM=xterm
+    volumes:
+      - ./www:/usr/share/nginx/html/www
+      - ./conf.d/nginx.conf:/etc/nginx/nginx.conf
+      - ./conf.d/localhost.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - "webapp_php82_01:php82fpm"
+    ports:
+      - "80:80"
+    networks:
+      - webapp_network
+
+networks:
+  webapp_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.10.0.0/24
+          gateway: 172.10.0.1
