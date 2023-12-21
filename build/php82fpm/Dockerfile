@@ -1,4 +1,4 @@
-FROM php:8.2.10-fpm
+FROM php:8.2.13-fpm
 ARG PSR_VERSION=1.2.0
 
 RUN set -xe && \
