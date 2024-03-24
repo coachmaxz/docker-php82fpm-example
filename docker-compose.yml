@@ -30,7 +30,7 @@ services:
 # ======================================================================
 
   webapp_nginx_01:
-    image: nginx:1.25.3-alpine
+    image: nginx:1.25.4-alpine
     container_name: webapp-nginx-01
     working_dir: /usr/share/nginx/html
     restart: always
