@@ -1,9 +1,7 @@
-version: '3.9'
-
 services:
 
 # ======================================================================
-# PHP 8.2
+# PHP 8.2.21
 # ======================================================================
 
   webapp_php82_01:
@@ -30,7 +28,7 @@ services:
 # ======================================================================
 
   webapp_nginx_01:
-    image: nginx:1.25.4-alpine
+    image: nginx:1.27.0-alpine
     container_name: webapp-nginx-01
     working_dir: /usr/share/nginx/html
     restart: always
@@ -51,8 +49,8 @@ services:
 networks:
   webapp_network:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.10.0.0/24
-          gateway: 172.10.0.1
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 172.10.0.0/24
+#          gateway: 172.10.0.1
